@@ -58,6 +58,22 @@ server.delete('/api/users/:id', (req, res) => {
   })
 })
 
+server.put('/api/users/:id', (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+
+    db.update(id, changes).then( updated => {
+      if(updated === 0){
+        res.status(404).json({ message: "The user with the specified ID does not exist." })
+      } else {
+        res.status(200).json(updated)
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "The user information could not be modified." })
+  })
+})
+
 
 server.listen(8000, (req, res) => {
     console.log('api running on port 8000')
