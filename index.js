@@ -34,7 +34,7 @@ server.get('/api/users', (req, res) => {
 server.get('/api/users/:id', (req, res) => {
     const id = req.params.id;
     db.findById(id).then(user => {
-      if(user === 0){
+      if(!user){
         return res.status(404).json({ message: 'The user with the specified ID does not exist.' })
       } else {
         return res.status(200).json(user)
@@ -48,7 +48,7 @@ server.get('/api/users/:id', (req, res) => {
 server.delete('/api/users/:id', (req, res) => {
     const id = req.params.id;
     db.remove(id).then(deleted => {
-      if(deleted === 0){
+      if(!deleted){
         return res.status(404).json({ message: "The user with the specified ID does not exist." })
       } 
         return res.status(204).end();
@@ -64,7 +64,7 @@ server.put('/api/users/:id', (req, res) => {
     const { name, bio } = req.body;
 
     db.update(id, changes).then( updated => {
-      if(updated === 0){
+      if(!updated){
         res.status(404).json({ message: "The user with the specified ID does not exist." })
       } else if (!name || !bio) {
         res.status(400).json({ message: 'Please provide name and bio for the user.' })
